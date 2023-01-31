@@ -1,0 +1,4 @@
+version: '3'
+services:
+  emul-bike:
+    image: node:16-alpine

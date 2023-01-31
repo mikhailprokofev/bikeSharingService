@@ -1,0 +1,27 @@
+version: '3'
+services:
+# Системы управления
+  # Упарвление всеми контейнерами
+  portainer:
+    image: portainer/portainer-ce:latest
+    # container_name: portainer
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./docker/portainer-data:/var/portainer/data
+    ports:
+      - 9081:9000
+
+  # # Управление редис
+  # redis-commander:
+  #   # container_name: redis-commander
+  #   hostname: redis-commander
+  #   image: rediscommander/redis-commander:latest
+  #   restart: always
+  #   environment:
+  #     - REDIS_HOSTS=redis
+  #   ports:
+  #     - "8081:8081"

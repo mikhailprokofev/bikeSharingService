@@ -1,0 +1,6 @@
+/backups/**
+**.env
+**.lock
+**/supervisord.log
+**/vendor
+**/node_modules

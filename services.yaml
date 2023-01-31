@@ -1,0 +1,56 @@
+version: '3'
+# Шаблоны для контейнеров
+# Шаблон контейнера для сервиса на php
+x-php: &php
+  platform: linux/arm64/v8
+  user: 1000:1000
+  build: ./docker/
+  volumes:
+    - .env:/var/www/.env
+# Шаблон контейнера для сервиса базы данных
+x-postgres: &postgress
+  platform: linux/arm64/v8
+  image: postgres:11.2-alpine
+  volumes:
+    - ./docker/postgress/:/docker-entrypoint-initdb.d/
+  healthcheck:
+    test: pg_isready -U${POSTGRES_USER} -d${POSTGRES_DB} -p5432
+    interval: 3s
+    timeout: 3s
+    retries: 10
+  environment:
+    POSTGRES_USER: ${POSTGRES_USER}
+    POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    POSTGRES_DB: ${POSTGRES_DB}
+# Шаблон контейнера для сервиса RabbitMQ
+x-rabbitmq: &rabbit
+  image: rabbitmq:3.7-management
+
+services:
+# Сервисы:
+  
+  gateway-app:
+    <<: *php
+    volumes:
+      - ./services/gateway:/var/www
+      - .env:/var/www/.env
+    ports:
+      - '80:80'
+
+  auth-app:
+    <<: *php
+    volumes:
+      - ./services/auth:/var/www
+      - .env:/var/www/.env
+    ports:
+      - '8080:80'
+    depends_on:
+      auth-db:
+        condition: service_healthy
+
+  auth-db:
+    <<: *postgress
+    volumes:
+      - ./backups/auth:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
