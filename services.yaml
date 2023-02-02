@@ -28,7 +28,6 @@ x-rabbitmq: &rabbit
 
 services:
 # Сервисы:
-  
   gateway-app:
     <<: *php
     volumes:
@@ -53,4 +52,4 @@ services:
     volumes:
       - ./backups/auth:/var/lib/postgresql/data
     ports:
-      - '5432:5432'
+      - '${AUTH_POSTGRES_PORT}:5432'  

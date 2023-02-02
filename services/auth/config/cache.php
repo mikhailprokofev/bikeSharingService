@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('CACHE_DRIVER', 'file'),
+    'default' => env('AUTH_CACHE_DRIVER', 'file'),
 
     /*
     |--------------------------------------------------------------------------
@@ -56,18 +56,18 @@ return [
 
         'memcached' => [
             'driver' => 'memcached',
-            'persistent_id' => env('MEMCACHED_PERSISTENT_ID'),
+            'persistent_id' => env('AUTH_MEMCACHED_PERSISTENT_ID'),
             'sasl' => [
-                env('MEMCACHED_USERNAME'),
-                env('MEMCACHED_PASSWORD'),
+                env('AUTH_MEMCACHED_USERNAME'),
+                env('AUTH_MEMCACHED_PASSWORD'),
             ],
             'options' => [
                 // Memcached::OPT_CONNECT_TIMEOUT => 2000,
             ],
             'servers' => [
                 [
-                    'host' => env('MEMCACHED_HOST', '127.0.0.1'),
-                    'port' => env('MEMCACHED_PORT', 11211),
+                    'host' => env('AUTH_MEMCACHED_HOST', '127.0.0.1'),
+                    'port' => env('AUTH_MEMCACHED_PORT', 11211),
                     'weight' => 100,
                 ],
             ],
@@ -81,11 +81,11 @@ return [
 
         'dynamodb' => [
             'driver' => 'dynamodb',
-            'key' => env('AWS_ACCESS_KEY_ID'),
-            'secret' => env('AWS_SECRET_ACCESS_KEY'),
-            'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
-            'table' => env('DYNAMODB_CACHE_TABLE', 'cache'),
-            'endpoint' => env('DYNAMODB_ENDPOINT'),
+            'key' => env('AUTH_AWS_ACCESS_KEY_ID'),
+            'secret' => env('AUTH_AWS_SECRET_ACCESS_KEY'),
+            'region' => env('AUTH_AWS_DEFAULT_REGION', 'us-east-1'),
+            'table' => env('AUTH_DYNAMODB_CACHE_TABLE', 'cache'),
+            'endpoint' => env('AUTH_DYNAMODB_ENDPOINT'),
         ],
 
         'octane' => [
@@ -105,6 +105,6 @@ return [
     |
     */
 
-    'prefix' => env('CACHE_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_cache_'),
+    'prefix' => env('AUTH_CACHE_PREFIX', Str::slug(env('AUTH_APP_NAME', 'laravel'), '_').'_cache_'),
 
 ];

@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('MAIL_MAILER', 'smtp'),
+    'default' => env('AUTH_MAIL_MAILER', 'smtp'),
 
     /*
     |--------------------------------------------------------------------------
@@ -36,13 +36,13 @@ return [
     'mailers' => [
         'smtp' => [
             'transport' => 'smtp',
-            'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
-            'port' => env('MAIL_PORT', 587),
-            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-            'username' => env('MAIL_USERNAME'),
-            'password' => env('MAIL_PASSWORD'),
+            'host' => env('AUTH_MAIL_HOST', 'smtp.mailgun.org'),
+            'port' => env('AUTH_MAIL_PORT', 587),
+            'encryption' => env('AUTH_MAIL_ENCRYPTION', 'tls'),
+            'username' => env('AUTH_MAIL_USERNAME'),
+            'password' => env('AUTH_MAIL_PASSWORD'),
             'timeout' => null,
-            'local_domain' => env('MAIL_EHLO_DOMAIN'),
+            'local_domain' => env('AUTH_MAIL_EHLO_DOMAIN'),
         ],
 
         'ses' => [
@@ -59,12 +59,12 @@ return [
 
         'sendmail' => [
             'transport' => 'sendmail',
-            'path' => env('MAIL_SENDMAIL_PATH', '/usr/sbin/sendmail -bs -i'),
+            'path' => env('AUTH_MAIL_SENDMAIL_PATH', '/usr/sbin/sendmail -bs -i'),
         ],
 
         'log' => [
             'transport' => 'log',
-            'channel' => env('MAIL_LOG_CHANNEL'),
+            'channel' => env('AUTH_MAIL_LOG_CHANNEL'),
         ],
 
         'array' => [
@@ -92,8 +92,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+        'address' => env('AUTH_MAIL_FROM_ADDRESS', 'hello@example.com'),
+        'name' => env('AUTH_MAIL_FROM_NAME', 'Example'),
     ],
 
     /*

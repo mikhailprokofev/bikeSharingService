@@ -1,11 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Throwable;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
+use Illuminate\Validation\ValidationException;
 
-class Handler extends ExceptionHandler
+final class Handler extends ExceptionHandler
 {
     /**
      * A list of exception types with their corresponding custom log levels.
@@ -36,15 +40,45 @@ class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
-    /**
-     * Register the exception handling callbacks for the application.
-     *
-     * @return void
-     */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function (\Exception $e, $request) {
+            $response = match (true) {
+                $e instanceof ValidationException => [
+                    [
+                        'message' => 'Validation Error',
+                        'errors' => $e->errors(),
+                    ],
+                    400,
+                ],
+                $e instanceof ThrottleRequestsException => [
+                    [
+                        'error' => "ThrottleRequestsException",
+                        'massage' => $e ->errors(),
+                    ],
+                    425
+                ],
+                $e instanceof NotFoundHttpException => [
+                    [
+                        'exception' => 'NotFoundHttpException',
+                        'message' => $e->getMessage(),
+                    ],
+                    404,
+                ],
+                default => [
+                    [
+                        'message' => get_class($e),
+                        'errors' => $e->getMessage(),
+                        'path' => url()->current(),
+                        'prewpath' => url()->previous(),
+                        'method' => request()->method(),
+                        'exception' => get_class($e),
+                    ],
+                    404,
+                ],
+            };
+
+            return response()->json(...$response);
         });
     }
 }
