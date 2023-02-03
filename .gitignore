@@ -1,7 +1,7 @@
 /backups/**
 **.env
 **.pid
-**.lock
+#**.lock
 **/supervisord.log
 **/vendor
 **/node_modules
