@@ -1,5 +1,4 @@
-controllers:
-    resource:
-        path: ../src/Controller/
-        namespace: App\Controller
-    type: attribute
+healthcheck:
+    path: /api/healthcheck/gateway
+    controller: Gateway\Infrastructure\Controller\HealthCheck\HealthCheckGatewayAction
+    methods: GET

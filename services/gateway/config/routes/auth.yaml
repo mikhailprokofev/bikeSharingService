@@ -1,0 +1,16 @@
+signIn:
+  path: /api/auth/sign-in
+  controller: Gateway\Infrastructure\Controller\Auth\SignInAction
+  methods: POST|OPTIONS
+signUp:
+  path: /api/auth/sign-up
+  controller: Gateway\Infrastructure\Controller\Auth\SignUpAction
+  methods: POST|OPTIONS
+refresh:
+  path: /api/auth/refresh
+  controller: Gateway\Infrastructure\Controller\Auth\RefreshTokenAction
+  methods: POST
+#isCorrect:
+#  path: /api/auth/is-correct/token
+#  controller: Gateway\Infrastructure\Controller\Auth\LoginController
+#  methods: POST|OPTIONS
