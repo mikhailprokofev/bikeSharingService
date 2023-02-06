@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Gateway\Infrastructure\Collector\Auth;
 
 use Gateway\Infrastructure\Collector\AbstractCollector;
-use SignUpInput;
+use Gateway\Module\Auth\SignUp\SignUpInput;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Composite;
@@ -30,7 +30,7 @@ final class SignUpCollector extends AbstractCollector
 
         return new SignUpInput(
             $request->toArray()['email'],
-            $request->toArray()['fullname'],
+            $request->toArray()['full_name'],
             $request->toArray()['password'],
         );
     }
@@ -42,7 +42,7 @@ final class SignUpCollector extends AbstractCollector
                 new NotBlank(),
                 new Email(),
             ],
-            'fullname' => [
+            'full_name' => [
                 new NotBlank(),
             ],
             'password' => [

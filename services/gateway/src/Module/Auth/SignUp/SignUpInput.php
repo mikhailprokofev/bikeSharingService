@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Gateway\Module\Auth\SignUp;
+
 final class SignUpInput
 {
     public function __construct(
