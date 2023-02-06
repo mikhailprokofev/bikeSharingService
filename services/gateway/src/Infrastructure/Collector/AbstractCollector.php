@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Gateway\Infrastructure\Collector;
 
-use PHPUnit\Util\Exception;
+use Gateway\Common\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\Composite;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -19,14 +19,18 @@ abstract class AbstractCollector
 
     abstract protected function constraints(): Composite;
 
+    /**
+     * @param Request $request
+     * @return void
+     * @throws ValidationException
+     */
     public function validate(Request $request): void
     {
         $errors = $this->validator->validate($this->getContent($request), $this->constraints());
+
         if ($errors->count()) {
-            // TODO: Подумать над выводом в эксепшн/лог
-//            $bags = $this->prepareErrorBags($errors);
-//            dd($bags);
-            throw new Exception('Invalid data');
+            // TODO: Подумать над реализацией вывода в эксепшн/лог (события может быть)
+            throw new ValidationException($this->prepareErrorBags($errors));
         }
     }
 
@@ -40,6 +44,7 @@ abstract class AbstractCollector
         );
     }
 
+    // TODO: подумать над структурой вывода
     protected function prepareErrorBags(ConstraintViolationListInterface $violations): array
     {
         $bags = [];
@@ -48,6 +53,7 @@ abstract class AbstractCollector
         foreach ($violations as $violation) {
             $bag['path'] = $this->preparePropertyName($violation->getPropertyPath());
             $bag['message'] = $violation->getMessage();
+
             $bags[] = $bag;
         }
 
