@@ -3,7 +3,7 @@ framework:
         failure_transport: failed_default
         transports:
             auth:
-                dsn: '%env(MESSENGER_TRANSPORT)%'
+                dsn: '%env(MESSENGER_TRANSPORT_RABBIT)%'
                 options:
                     exchange:
                         name: gateway_auth
