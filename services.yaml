@@ -54,3 +54,14 @@ services:
       - ./backups/auth:/var/lib/postgresql/data
     ports:
       - '5432:5432'
+
+  common-rabbitmq:
+    container_name: common-rabbitmq
+    image: rabbitmq:3.7-management
+    ports:
+      - '5672:15672'
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 3s
+      timeout: 3s
+      retries: 3
