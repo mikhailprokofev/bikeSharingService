@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Gateway\MessageHandler\Auth;
 
-use Gateway\Message\Auth\RefreshTokenMessage;
+use Gateway\Infrastructure\Messager\Message\Auth\RefreshTokenMessage;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]

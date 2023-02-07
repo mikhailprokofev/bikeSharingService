@@ -4,6 +4,7 @@ framework:
         transports:
             auth:
                 dsn: '%env(MESSENGER_TRANSPORT_RABBIT)%'
+                serializer: Gateway\Component\Serializer\ExternalJsonMessageSerializer
                 options:
                     exchange:
                         name: gateway_auth
@@ -15,4 +16,5 @@ framework:
 
         routing:
             # 'App\Message\YourMessage': async
-            'Gateway\Message\Auth\RefreshTokenMessage': auth
+            'Gateway\Infrastructure\Messager\Message\Auth\RefreshTokenMessage': auth
+#            'Gateway\Message\AcceptRefreshTokenJob': auth

@@ -74,8 +74,8 @@ return [
         'rabbitmq' => [
             'driver' => 'rabbitmq',
             'dsn' => env('MESSENGER_TRANSPORT_RABBIT', null),
-//            'queue' => env('QUEUE_AUTH', 'gateway_auth'),
-            'queue' => 'test,gateway_auth',
+            'queue' => env('QUEUE_AUTH', 'gateway_auth'),
+//            'queue' => 'test, gateway_auth',
 
             'factory_class' => Enqueue\AmqpLib\AmqpConnectionFactory::class,
             'hosts' => [
@@ -102,7 +102,10 @@ return [
                 'queue' => [
                     'declare' => env('RABBITMQ_QUEUE_DECLARE', true),
                     'bind' => env('RABBITMQ_QUEUE_DECLARE_BIND', true),
-                    'name' => env('QUEUE_AUTH', 'gateway_auth'),
+//                    'name' => env('QUEUE_AUTH', 'gateway_auth'),
+
+                    'job' => VladimirYuldashev\LaravelQueueRabbitMQ\Queue\Jobs\RabbitMQJob::class,
+
 // https://www.rabbitmq.com/tutorials/amqp-concepts.html
 //                    'passive' => env('RABBITMQ_QUEUE_PASSIVE', false),
 //                    'durable' => env('RABBITMQ_QUEUE_DURABLE', true),

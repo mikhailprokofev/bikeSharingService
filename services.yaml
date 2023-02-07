@@ -34,6 +34,8 @@ services:
     volumes:
       - ./services/gateway:/var/www
       - .env:/var/www/.env
+    environment:
+      - MESSAGE_DIRECTORY=var/www/src/Infrastructure/Messager/Message/
     ports:
       - '80:80'
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Gateway\Message\Auth;
+namespace Gateway\Infrastructure\Messager\Message\Auth;
 
 final class RefreshTokenMessage
 {
