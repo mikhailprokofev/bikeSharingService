@@ -6,6 +6,7 @@ namespace Gateway\Component\Serializer;
 
 use Exception;
 use Gateway\Component\Serializer\Exception\ExternalMessageDecodingException;
+use Gateway\Component\Serializer\Utility\FileFinder;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
 
@@ -121,9 +122,18 @@ final class ExternalJsonMessageSerializer implements SerializerInterface
     private function prepareMessageFileName(string $value): string
     {
         $className = $this->prepareMessageClassName($value);
+        $extension = '.php';
 
-        // TODO: подумать откуда путь брать
-//        $directory = $_SERVER['MESSAGE_DIRECTORY'];
-        return 'Gateway\Infrastructure\Messager\Message\Auth\\' . $className;
+        // TODO: config services -> from env
+        $namespaceBegin = 'Gateway';
+        $serverNamespaceBegin = './src';
+
+        $filePaths = FileFinder::findInFolder($className . $extension);
+
+        // TODO: вынести в отдельные функции
+        $filePath = $filePaths[0];
+        $filePath = str_replace($serverNamespaceBegin, $namespaceBegin, $filePath);
+        $filePath = rtrim($filePath, $extension);
+        return str_replace('/', '\\', $filePath);
     }
 }
