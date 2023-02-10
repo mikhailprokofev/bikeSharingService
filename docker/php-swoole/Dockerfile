@@ -3,6 +3,8 @@ ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/do
 #FROM phpswoole/swoole:latest-php:8.1-alpine
 
 #CMD ["sudo", "chmod", "-R", "ugo+x", "/usr/src/php"]
+COPY --chmod=775 ./usr/src/php /usr/src/php
+
 RUN #ln -s /usr/lib /usr/local/lib64 \
     docker-php-ext-install  \
     pgsql  \
@@ -17,7 +19,7 @@ ENTRYPOINT ["docker-php-entrypoint"]
 ARG GID
 ARG UID
 
-WORKDIR /src
+WORKDIR /var/www
 USER $GID:$UID
 #
 ##CMD ["php", "./server.php"]
