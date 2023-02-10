@@ -67,3 +67,21 @@ services:
       interval: 3s
       timeout: 3s
       retries: 3
+
+  compiler-php:
+#    <<: *php
+#    platform: linux/arm64/v8
+    user: 1000:1000
+    container_name: compiler-php
+#    image: phpswoole/swoole
+    build:
+      args:
+        GID: ${GID}
+        UID: ${UID}
+      context: .
+      dockerfile: docker/php-swoole/Dockerfile
+    volumes:
+      - ./services/compiler:/var/www
+      - .env:/var/www/.env
+    ports:
+      - '9008:9008'
