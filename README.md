@@ -6,3 +6,6 @@
 ##### Auth
     php artisan queue:work
 ---
+
+### Тест работы amphp
+    php src/testAmphp.php
