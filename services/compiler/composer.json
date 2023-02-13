@@ -1,0 +1,23 @@
+{
+  "name": "compiler/php",
+  "type": "project",
+  "description": "Compiler microservice responses",
+  "require": {
+    "php": "^8.1.10",
+    "ext-bcmath": "*",
+    "amphp/amp": "^3.0",
+    "revolt/event-loop": "^1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Compiler\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Compiler\\Tests\\": "tests/"
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}

@@ -28,7 +28,6 @@ x-rabbitmq: &rabbit
 
 services:
 # Сервисы:
-  
   gateway-app:
     <<: *php
     volumes:
@@ -67,3 +66,18 @@ services:
       interval: 3s
       timeout: 3s
       retries: 3
+
+  compiler-php:
+    <<: *php
+    build:
+      args:
+        GID: ${GID}
+        UID: ${UID}
+      context: ./docker/amphp
+      dockerfile: Dockerfile
+    volumes:
+      - ./docker/amphp/php.ini:/usr/local/etc/amphp/php.ini
+      - ./services/compiler:/var/www
+      - .env:/var/www/.env
+    ports:
+      - '9008:9008'
