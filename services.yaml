@@ -7,6 +7,15 @@ x-php: &php
   build: ./docker/
   volumes:
     - .env:/var/www/.env
+# Шаблон контейнера для сервиса на nodeJS
+x-node: &node
+  platform: linux/arm64/v8
+  # user: 1000:1000
+  image: node:16-alpine
+  working_dir: /app
+  command: 'yarn run start:dev'
+  volumes:
+    - .env:/var/www/.env
 # Шаблон контейнера для сервиса базы данных
 x-postgres: &postgress
   platform: linux/arm64/v8
@@ -28,11 +37,10 @@ x-rabbitmq: &rabbit
 
 services:
 # Сервисы:
-  
   gateway-app:
-    <<: *php
+    <<: *node
     volumes:
-      - ./services/gateway:/var/www
+      - ./services/gateway:/app
       - .env:/var/www/.env
     ports:
       - '80:80'
