@@ -1,26 +1,24 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
-import { SignInDto } from './dto/SignInDto';
-import { SignUpDto } from './dto/SignUpDto';
-import { RefreshDto } from './dto/RefreshDto';
+import { SignInDto, SignUpDto, RefreshDto } from './dto';
 
 @Controller('auth')
 export class AuthController {
-  @Post()
+  @Post('sign-in')
   signIn(@Body() signInDto: SignInDto): string {
     return 'This action returns all cats';
   }
 
-  @Post()
+  @Post('sign-up')
   signUn(@Body() signUpDto: SignUpDto): string {
     return 'This action returns all cats';
   }
 
-  @Post()
+  @Post('refresh')
   refresh(@Body() refreshDto: RefreshDto): string {
     return 'This action returns all cats';
   }
 
-//   @Post()
+//   @Post('is-correct/token')
 //   isCorrect(): string {
 //     return 'This action returns all cats';
 //   }

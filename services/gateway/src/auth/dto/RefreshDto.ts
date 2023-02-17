@@ -1,5 +1,6 @@
+import {IsNotEmpty} from "class-validator";
+
 export class RefreshDto {
-    name: string;
-    age: number;
-    breed: string;
+    @IsNotEmpty()
+    readonly token: string;
 }
