@@ -17,6 +17,6 @@ final class AcceptRefreshTokenMessageHandler
 
     public function __invoke(AcceptRefreshTokenMessage $message): void
     {
-        $this->logger->error('defsfdsf');
+        $this->logger->debug('Hello');
     }
 }

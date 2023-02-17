@@ -17,4 +17,4 @@ framework:
         routing:
             # 'App\Message\YourMessage': async
             'Gateway\Infrastructure\Messager\Message\Auth\RefreshTokenMessage': auth
-#            'Gateway\Message\AcceptRefreshTokenJob': auth
+            'Gateway\Infrastructure\Messager\Message\Auth\AcceptRefreshTokenMessage': auth

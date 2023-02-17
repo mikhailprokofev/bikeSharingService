@@ -32,7 +32,6 @@ final class ExternalJsonMessageSerializer implements SerializerInterface
         $data = $this->prepareUnserializedData($data);
 
         $messageFileName = array_shift($data);
-
         try {
             $message = $this->createMessage($messageFileName, $data);
         } catch (Exception $e) {

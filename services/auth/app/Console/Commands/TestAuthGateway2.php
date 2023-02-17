@@ -1,19 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Jobs\Gateway\AcceptRefreshTokenJob;
 use App\Jobs\Gateway\RefreshTokenJob;
 use Illuminate\Console\Command;
 
-class TestAuthGateway extends Command
+final class TestAuthGateway2 extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'test:gateway';
+    protected $signature = 'test:gatewayy';
 
     /**
      * The console command description.
@@ -24,7 +26,6 @@ class TestAuthGateway extends Command
 
     public function handle(): void
     {
-        AcceptRefreshTokenJob::dispatch();
-//        RefreshTokenJob::dispatch();
+        RefreshTokenJob::dispatch();
     }
 }

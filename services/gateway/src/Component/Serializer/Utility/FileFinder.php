@@ -20,10 +20,10 @@ final class FileFinder
                 continue;
             }
 
-            if(is_file($filePath) && str_contains($file, $fileName)) {
+            if(is_file($filePath) && strcmp($file, $fileName) == 0) {
                 $found[] = $filePath;
             } elseif (is_dir($filePath)) {
-                $result = self::findInFolder($filePath, $fileName);
+                $result = self::findInFolder($fileName, $filePath);
                 $found = array_merge($found, $result);
             }
         }
