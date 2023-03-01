@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common'
+import {ConfigService} from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -10,6 +11,9 @@ async function bootstrap() {
     // transform: true,
   }));
   app.setGlobalPrefix('api');
-  await app.listen(3000); // TODO: брать переменную из env
+  const configService = app.get(ConfigService);
+  await app.listen(configService.get('PORT_GATEWAY'));
+
 }
+
 bootstrap();

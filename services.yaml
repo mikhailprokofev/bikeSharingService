@@ -41,7 +41,7 @@ services:
     <<: *node
     volumes:
       - ./services/gateway:/app
-      - .env:/var/www/.env
+      - .env:/app/.env
     ports:
       - '80:3000'
 
