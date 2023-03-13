@@ -52,4 +52,4 @@ services:
     volumes:
       - ./backups/auth:/var/lib/postgresql/data
     ports:
-      - '${AUTH_POSTGRES_PORT}:5432'  
+      - '5432:5432'

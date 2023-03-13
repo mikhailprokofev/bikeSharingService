@@ -1,4 +1,3 @@
-php artisan jwt:secret
-php artisan passport:keys
-
-php artisan vendor:publish --tag=passport-config
+php bin/console
+php bin/console doctrine:schema:create
+php bin/console lexik:jwt:generate-keypair
