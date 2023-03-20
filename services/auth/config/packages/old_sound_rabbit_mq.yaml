@@ -1,0 +1,50 @@
+# old_sound_rabbit_mq:
+#     connections:
+#         default:
+#             url: '%env(RABBITMQ_URL)%'
+# #    producers:
+# #        # use 'old_sound_rabbit_mq.task_producer' service to send data.
+# #        task:
+# #            connection:       default
+# #            exchange_options: { name: 'task', type: direct }
+# #    consumers:
+# #        task:
+# #            connection:       default
+# #            exchange_options: { name: 'task', type: direct }
+# #            queue_options:    { name: 'task'}
+# #            callback:         App\Consumer\TaskConsumer
+
+old_sound_rabbit_mq:
+    connections:
+        default:
+            url: '%env(AUTH_RABBITMQ_URL)%'
+            read_write_timeout: 3
+            connection_timeout: 3
+            lazy:     false
+            keepalive: true
+            heartbeat: 0
+            use_socket: true
+    producers:
+        answer:
+            connection:       default
+            exchange_options: { name: 'auth', type: direct }
+            queue_options:    { name: 'answer', routing_key: 'answer'}
+    consumers:
+        task:
+            connection:       default
+            exchange_options: { name: 'auth', type: direct }
+            queue_options:    { name: 'task', routing_key: 'task'}
+            callback:         task_service
+            enable_logger:    true
+        login:
+            connection:       default
+            exchange_options: { name: 'auth', type: direct }
+            queue_options:    { name: 'login', routing_key: 'login'}
+            callback:         login_service
+            enable_logger:    true
+        register:
+            connection:       default
+            exchange_options: { name: 'auth', type: direct }
+            queue_options:    { name: 'register', routing_key: 'register'}
+            callback:         register_service
+            enable_logger:    true

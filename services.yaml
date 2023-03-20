@@ -36,6 +36,12 @@ services:
     ports:
       - '80:80'
 
+  common-rabbitmq:
+    <<: *rabbit
+    ports:
+      - '15672:15672'
+      - '5672:5672'
+
   auth-app:
     <<: *php
     volumes:
