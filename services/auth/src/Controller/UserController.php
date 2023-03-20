@@ -129,17 +129,4 @@ class UserController extends DefaultController
         $users = $entityManager->getRepository(User::class)->findAll();
         return $this->json($users, 200);
     }
-
-    // #[
-    //     Route(
-    //         '/api/user/current',
-    //         name:'user_current',
-    //         methods:['GET'],
-    //     )
-    // ]
-    // public function currentUsers(): JsonResponse
-    // {
-    //     $user = $this->tokenStorage->getToken()->getUser();
-    //     return $this->json($user, 200);
-    // }
 }
