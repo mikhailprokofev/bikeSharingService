@@ -31,3 +31,6 @@ services:
 
     register_service:
         class: App\Message\RegisterConsumer
+
+    logout_service:
+        class: App\Message\LogoutConsumer
