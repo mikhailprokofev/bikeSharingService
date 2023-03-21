@@ -50,6 +50,7 @@ class LoginHandler
     {
         $token = $this->tokenManager->create($user);
         $refreshToken = UserToken::refreshToken($user, 86400);
+        $this->em->persist($refreshToken);
         return [
             'access_token'  => $token,
             'refresh_token' => $refreshToken->getToken(),

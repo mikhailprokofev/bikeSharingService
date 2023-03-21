@@ -5,18 +5,33 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use DateTimeImmutable;
+use Symfony\Component\Uid\Uuid;
+use Doctrine\ORM\Mapping as ORM;
 
+#[
+    ORM\Entity,
+    ORM\Table(name: 'user_tokens')
+]
 class UserToken
 {
-    private int $id;
+    #[
+        ORM\Id,
+        ORM\Column(type: 'uuid')
+    ]
+    private Uuid $id;
+    #[ORM\ManyToOne(targetEntity: User::class)]
     private User $user;
+    #[ORM\Column(type: 'string', length: 32, unique:true)]
     private string $token;
+    #[ORM\Column(type: 'datetime_immutable')]
     private DateTimeImmutable $expiredAt;
+    #[ORM\Column(type: 'datetime_immutable')]
     private DateTimeImmutable $createdAt;
 
     private static function create(User $user, string $token, int $expire = 3650): self
     {
         $model = new self();
+        $model->id = Uuid::v4();
         $model->user = $user;
         $model->token = $token;
         $model->expiredAt = new DateTimeImmutable("+{$expire} second");
@@ -33,6 +48,11 @@ class UserToken
     public function getToken(): string
     {
         return $this->token;
+    }
+
+    public function expired(): void
+    {
+        $this->expiredAt = new DateTimeImmutable();
     }
 
     public function isExpired(): bool

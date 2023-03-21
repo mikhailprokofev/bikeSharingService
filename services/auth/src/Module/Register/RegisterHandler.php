@@ -6,24 +6,29 @@ namespace App\Module\Register;
 
 use DomainException;
 use App\Entity\User;
+use App\Entity\UserToken;
 use Symfony\Component\Uid\Uuid;
-use App\Module\Login\LoginHandler;
+use Doctrine\ORM\EntityManagerInterface;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
+
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class RegisterHandler
 {
 
     public function __construct(
-        private readonly \Doctrine\Persistence\ManagerRegistry $registry,
+        private readonly EntityManagerInterface $em,
+        private readonly JWTTokenManagerInterface $tokenManager,
         private readonly UserPasswordHasherInterface $passwordHasher,
-        private LoginHandler $loginHandler,
     ) {}
 
     public function prepare(array $data)
     {
         $this->validate($data);
         $user = $this->create($data);
-        return $this->login($user, $data['password']);
+        $request = $this->login($user);
+        $this->em->flush();
+        return $request;
     }
 
     public function validate(array $data)
@@ -43,9 +48,6 @@ class RegisterHandler
 
     public function create(array $data): User
     {
-
-        $entityManager = $this->registry->getManager();
-
         $user = new User(
             Uuid::v4(),
             $data['login'],
@@ -54,15 +56,19 @@ class RegisterHandler
         );
 
         $user->setPassword($this->passwordHasher->hashPassword($user, $data['password']));
-        $entityManager->persist($user);
-        $entityManager->flush();
-
+        $this->em->persist($user);
         return $user;
     }
 
-    public function login($user,$pass)
+    public function login($user)
     {
-        $login = $user->login;
-        return $this->loginHandler->prepare($login,$pass);
+        $token = $this->tokenManager->create($user);
+        $refreshToken = UserToken::refreshToken($user, 86400);
+        $this->em->persist($refreshToken);
+        return [
+            'access_token'  => $token,
+            'refresh_token' => $refreshToken->getToken(),
+            'user'          => $user,
+        ];
     }
 }
