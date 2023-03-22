@@ -36,12 +36,6 @@ old_sound_rabbit_mq:
             default_content_type:   application/json
             queue_options:          { name: 'error', routing_key: 'errors'}
     consumers:
-        task:
-            connection:             default
-            exchange_options:       { name: 'auth', type: direct }
-            queue_options:          { name: 'task', routing_key: 'task'}
-            callback:               task_service
-            enable_logger:          true
         login:
             connection:             default
             exchange_options:       { name: 'auth', type: direct }
@@ -59,4 +53,10 @@ old_sound_rabbit_mq:
             exchange_options:       { name: 'auth', type: direct }
             queue_options:          { name: 'logout', routing_key: 'logout'}
             callback:               logout_service
+            enable_logger:          true
+        refresh:
+            connection:             default
+            exchange_options:       { name: 'auth', type: direct }
+            queue_options:          { name: 'refresh', routing_key: 'refresh'}
+            callback:               refresh_service
             enable_logger:          true

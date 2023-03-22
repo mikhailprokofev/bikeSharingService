@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Module\Logout;
+namespace App\Module\Refresh;
 
 use DomainException;
 use App\Entity\User;
@@ -12,7 +12,7 @@ use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 
-class LogoutHandler
+class RefreshHandler
 {
     public function __construct(
         private readonly EntityManagerInterface $em,
@@ -22,15 +22,14 @@ class LogoutHandler
 
     public function prepare(string $refreshToken)
     {
-        $this->expiredToken($refreshToken);
-        $this->em->flush();
-
-        return [
-            'message' => "You logged out",
-        ];
+        $token  = $this->expiredToken($refreshToken);
+        $user   = $token->getUser();
+        $output = $this->makeResponse($user);
+        $this -> em -> flush();
+        return $output;
     }
 
-    private function expiredToken(string $refreshToken): void
+    private function expiredToken(string $refreshToken): UserToken
     {
 
         if (!$token = $this->em->getRepository(UserToken::class)->findOneBy(['token' => $refreshToken])) {
@@ -41,7 +40,20 @@ class LogoutHandler
             throw new DomainException('Token is expired');
         }
 
-        $token->expired();
-        $this->em->persist($token);
+        $token -> expired();
+        $this -> em -> persist($token);
+        return $token;
+    }
+
+    private function makeResponse(User $user): array
+    {
+        $token = $this -> tokenManager -> create($user);
+        $refreshToken = UserToken::refreshToken($user, 86400);
+        $this -> em -> persist($refreshToken);
+        return [
+            'access_token'  => $token,
+            'refresh_token' => $refreshToken -> getToken(),
+            'user'          => $user,
+        ];
     }
 }

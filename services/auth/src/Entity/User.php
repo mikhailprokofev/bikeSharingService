@@ -20,9 +20,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \JsonSe
             ORM\Id,
             ORM\Column(type: 'uuid')
         ]
-        private readonly Uuid $id,
+        private Uuid $id,
         #[ORM\Column(type: 'string', length: 25, unique:true)]
-        private readonly string $login,
+        private string $login,
         #[ORM\Column(type: 'string', length: 255)]
         private string $username,
         #[ORM\Column(type: 'string', length: 60)]
