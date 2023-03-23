@@ -24,14 +24,22 @@ class RegisterHandler
 
     public function prepare(array $data)
     {
+        if (!$this->em->isOpen()) {
+            $this->em = $this->em->create(
+                $this->em->getConnection(),
+                $this->em->getConfiguration()
+            );
+        }
+
         $this->validate($data);
         $user = $this->create($data);
         $request = $this->login($user);
         $this->em->flush();
+        $this->em->clear();
         return $request;
     }
 
-    public function validate(array $data)
+    public function validate(array &$data)
     {
         if (empty($data['password']) || $data['password'] == '') {
             throw new DomainException('Empty password');
@@ -44,6 +52,10 @@ class RegisterHandler
         if (empty($data['username']) || $data['username'] == '') {
             throw new DomainException('Empty username');
         }
+
+        if (empty($data['role'])) {
+            $data['roles'] = ['ROLE_TENANT'];
+        }
     }
 
     public function create(array $data): User
@@ -53,6 +65,7 @@ class RegisterHandler
             $data['login'],
             $data['username'],
             "0123456789",
+            $data['roles'],
         );
 
         $user->setPassword($this->passwordHasher->hashPassword($user, $data['password']));

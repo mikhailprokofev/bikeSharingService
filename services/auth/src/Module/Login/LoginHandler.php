@@ -22,10 +22,18 @@ class LoginHandler
 
     public function prepare(string $login, string $password)
     {
+        if (!$this->em->isOpen()) {
+            $this->em = $this->em->create(
+                $this->em->getConnection(),
+                $this->em->getConfiguration()
+            );
+        }
+
         $user = $this->findUser($login);
         $this->validatePassword($password, $user);
         $output = $this->makeResponse($user);
         $this->em->flush();
+        $this->em->clear();
         return $output;
     }
 

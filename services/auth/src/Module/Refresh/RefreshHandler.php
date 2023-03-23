@@ -22,10 +22,18 @@ class RefreshHandler
 
     public function prepare(string $refreshToken)
     {
+        if (!$this->em->isOpen()) {
+            $this->em = $this->em->create(
+                $this->em->getConnection(),
+                $this->em->getConfiguration()
+            );
+        }
+
         $token  = $this->expiredToken($refreshToken);
         $user   = $token->getUser();
         $output = $this->makeResponse($user);
         $this -> em -> flush();
+        $this->em->clear();
         return $output;
     }
 
