@@ -31,5 +31,4 @@ USER 1000:1000
 COPY ./nginx/config/project.conf /etc/nginx/nginx.conf
 COPY ./supervisor/supervisor.conf /etc/supervisor.conf
 
-
 ENTRYPOINT [ "supervisord", "-c", "/etc/supervisor.conf" ]

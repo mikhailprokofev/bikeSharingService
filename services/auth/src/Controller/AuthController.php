@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Module\Login\LoginHandler;
+use App\Module\Logout\LogoutHandler;
+use App\Module\Refresh\RefreshHandler;
 use App\Module\Register\RegisterHandler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,6 +21,8 @@ class AuthController extends DefaultController
         private readonly UserPasswordHasherInterface $passwordHasher,
         private readonly TokenStorageInterface $tokenStorage,
         private LoginHandler $loginHandler,
+        private LogoutHandler $logoutHandler,
+        private RefreshHandler $refreshHandler,
         private RegisterHandler $registerHandler,
     ) {}
 
@@ -57,9 +61,10 @@ class AuthController extends DefaultController
             methods:['POST'],
         )
     ]
-    public function refresh(): JsonResponse
+    public function refresh(Request $request): JsonResponse
     {
-        return $this->json('reАвторизация прошла успешно!');
+        $data = (array) json_decode($request->getContent());
+        return $this->json($this->refreshHandler->prepare($data['refresh_token']));;
     }
 
     #[
@@ -69,8 +74,8 @@ class AuthController extends DefaultController
             methods:['POST'],
         )
     ]
-    public function logout(): JsonResponse
+    public function logout(Request $request): JsonResponse
     {
-        return $this->json('Авторизация прошла успешно!');
-    }
+        $data = (array) json_decode($request->getContent());
+        return $this->json($this->logoutHandler->prepare($data['refresh_token']));;    }
 }
