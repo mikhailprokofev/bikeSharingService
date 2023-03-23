@@ -59,3 +59,19 @@ services:
       - ./backups/auth:/var/lib/postgresql/data
     ports:
       - '5432:5432'
+
+  wallet-app:
+    <<: *php
+    volumes:
+      - ./services/wallet:/var/www
+      - .env:/var/www/.env
+    depends_on:
+      wallet-db:
+        condition: service_healthy
+
+  wallet-db:
+    <<: *postgress
+    volumes:
+      - ./backups/wallet:/var/lib/postgresql/data
+    ports:
+      - '5433:5432'

@@ -1,0 +1,23 @@
+old_sound_rabbit_mq:
+    connections:
+        default:
+            url: '%env(WALLET_RABBITMQ_URL)%'
+            read_write_timeout: 3
+            connection_timeout: 3
+            lazy:     false
+            keepalive: true
+            heartbeat: 0
+            use_socket: true
+    producers:
+        answer:
+            connection:             default
+            exchange_options:       { name: 'auth', type: direct }
+            default_content_type:   application/json
+            queue_options:          { name: 'answer', routing_key: 'answer'}
+        errors:
+            connection:             default
+            exchange_options:       { name: 'auth', type: direct }
+            default_content_type:   application/json
+            queue_options:          { name: 'error', routing_key: 'errors'}
+    consumers:
+        
