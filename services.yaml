@@ -28,7 +28,6 @@ x-rabbitmq: &rabbit
 
 services:
 # Сервисы:
-  
   gateway-app:
     <<: *php
     volumes:
@@ -36,6 +35,12 @@ services:
       - .env:/var/www/.env
     ports:
       - '80:80'
+
+  common-rabbitmq:
+    <<: *rabbit
+    ports:
+      - '15672:15672'
+      - '5672:5672'
 
   auth-app:
     <<: *php

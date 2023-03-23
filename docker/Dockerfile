@@ -6,8 +6,7 @@ RUN chmod +x /usr/local/bin/install-php-extensions && \
     pgsql \
     pdo_pgsql \
     amqp \
-    sockets \
-    bcmath
+    sockets
 
 RUN apk add --no-cache \
     supervisor \
@@ -31,6 +30,5 @@ USER 1000:1000
 
 COPY ./nginx/config/project.conf /etc/nginx/nginx.conf
 COPY ./supervisor/supervisor.conf /etc/supervisor.conf
-
 
 ENTRYPOINT [ "supervisord", "-c", "/etc/supervisor.conf" ]
